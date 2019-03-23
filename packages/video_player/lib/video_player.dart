@@ -186,6 +186,7 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
   Completer<void> _creatingCompleter;
   StreamSubscription<dynamic> _eventSubscription;
   _VideoAppLifeCycleObserver _lifeCycleObserver;
+  bool playInBackground = false;
 
   @visibleForTesting
   int get textureId => _textureId;
@@ -433,6 +434,8 @@ class _VideoAppLifeCycleObserver extends Object with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (_controller.playInBackground) return;
+
     switch (state) {
       case AppLifecycleState.paused:
         _wasPlayingBeforePause = _controller.value.isPlaying;
